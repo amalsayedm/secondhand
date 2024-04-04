@@ -21,7 +21,10 @@ class RegisterScreen extends StatelessWidget {
     return BlocProvider(create: (context){return LoginCubit();},
     child: BlocConsumer<LoginCubit,LoginStates>(listener: (context,state){
       if(state is RegisterSuccessState&& state.state==true){
-        navigateAndFinish(context,ShopLayout());
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ShopLayout()),
+        );
       }
     },
     builder:(context,state){

@@ -20,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
     return BlocConsumer<ShopLayoutCubit,ShopLayoutStates>(
       listener: (context,state){},
       builder:(context,state) {
-        ShopLayoutCubit cubit=ShopLayoutCubit.get(context)..getProfile();
+        ShopLayoutCubit cubit=ShopLayoutCubit.get(context);
         if (cubit.profileModel != null) {
           if (state is! ShopLayoutUpdateProfileLoadingState) {
             nameController.text = cubit.profileModel!.data.name.toString();
@@ -100,8 +100,12 @@ class SettingsScreen extends StatelessWidget {
                     defaultButton(
                       buttonText: "LogOut",
                       onPressed: () {
-                        SharedPrefHelper.removeData("token").then((value) =>
-                            navigateAndFinish(context, LoginScreen()));
+                        SharedPrefHelper.removeData("token").then((value) {
+
+
+                            cubit.profileModel=null;
+                            navigateAndFinish(context, LoginScreen());});
+
                       },
                     ),
                   ],

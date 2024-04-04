@@ -1,3 +1,4 @@
+import 'package:alx_spec/cubit/shop_layout_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,10 +68,12 @@ class LoginCubit extends Cubit<LoginStates>{
       if(value.statusCode == 201){
         loginModel=LoginModel.fromJson(value.data,value.statusCode);
 
+
         SharedPrefHelper.saveString(key: "token", value:value.data['data']['token']).
         then((bool){
           token=value.data['data']['token'];
         });
+
 
       toast("User Registered Successfully", Colors.green);
         //emit(RegisterSuccessState(value.data['status']));
