@@ -20,12 +20,12 @@ class SettingsScreen extends StatelessWidget {
     return BlocConsumer<ShopLayoutCubit,ShopLayoutStates>(
       listener: (context,state){},
       builder:(context,state) {
-        ShopLayoutCubit cubit=ShopLayoutCubit.get(context);
+        ShopLayoutCubit cubit=ShopLayoutCubit.get(context)..getProfile();
         if (cubit.profileModel != null) {
           if (state is! ShopLayoutUpdateProfileLoadingState) {
-            nameController.text = cubit.profileModel.data.name.toString();
-            emailController.text = cubit.profileModel.data.email.toString();
-            phoneController.text = cubit.profileModel.data.phone.toString();
+            nameController.text = cubit.profileModel!.data.name.toString();
+            emailController.text = cubit.profileModel!.data.email.toString();
+            phoneController.text = cubit.profileModel!.data.phone.toString();
           }
           return SingleChildScrollView(
             child: Padding(
@@ -77,6 +77,14 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     defaultButton(
+                      buttonText: "My Products",
+                      onPressed: () {
+
+                      },
+                    ),
+                    SizedBox(height: 20),
+
+                    defaultButton(
                       buttonText: "Update",
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
@@ -103,7 +111,7 @@ class SettingsScreen extends StatelessWidget {
           );
         } else {
           return Center(child: CircularProgressIndicator());
-        };
+        }
       }
     );
   }

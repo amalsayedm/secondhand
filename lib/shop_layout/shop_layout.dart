@@ -13,10 +13,10 @@ class ShopLayout extends StatelessWidget {
     return BlocConsumer<ShopLayoutCubit,ShopLayoutStates>(
       listener: (context,state){},builder: (context,state){
         ShopLayoutCubit cubit=ShopLayoutCubit.get(context);
-        return Scaffold(appBar: AppBar(title: Text("Shop"),
+        return Scaffold(appBar: AppBar(title: Text("Second Hand"),centerTitle: true,
           actions: [
           IconButton(icon: Icon(Icons.search), onPressed: (){
-            navigateTo(context,SearchScreen());
+            //navigateTo(context,SearchScreen());
           }),
         ],),
           body: cubit.screens[cubit.navBarIndex],
@@ -27,8 +27,9 @@ class ShopLayout extends StatelessWidget {
               cubit.changeNavBarIndex(index);
             },
             items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home),label: "Products"),
+            BottomNavigationBarItem(icon: Icon(Icons.home,),label: "Products",),
               BottomNavigationBarItem(icon:  Icon(Icons.apps),label:"Categories"),
+              BottomNavigationBarItem(icon:  Icon(Icons.add_circle_rounded),label:"Post Item"),
               BottomNavigationBarItem(icon:  Icon(Icons.favorite),label:"Favourites"),
               BottomNavigationBarItem(icon:  Icon(Icons.settings),label:"settings"),
 

@@ -81,7 +81,7 @@ class RegisterScreen extends StatelessWidget {
                       controller: phoneController,
                       inputType: TextInputType.phone,
                       labeltext: "Phone",
-                      prefixicon: Icons.email_outlined,
+                      prefixicon: Icons.phone_android,
                       validator: (String value) {
                         if (value.isEmpty) {
                           return " please enter your phone";
@@ -113,14 +113,24 @@ class RegisterScreen extends StatelessWidget {
                       ? defaultButton(
                     buttonText: "Register",
                     onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        LoginCubit.get(context).register(
-                          nameController.text,
-                          phoneController.text,
-                          emailController.text,
-                          passwordController.text,
-                        );
+
+                      if (nameController.text.isNotEmpty && phoneController.text.isNotEmpty
+                      &&emailController.text.isNotEmpty && passwordController.text.isNotEmpty ) {
+                        if(!isValidPhoneNumber(phoneController.text)){
+                          toast("Wrong whatsapp number format", Colors.amber);
+                        }else {
+                          LoginCubit.get(context).register(
+                            nameController.text,
+                            phoneController.text,
+                            emailController.text,
+                            passwordController.text,
+                          );
+                        }
+                      }else{
+                        toast("Please fill up your data", Colors.amber);
+
                       }
+
                     },
                   )
                       : Center(child: CircularProgressIndicator()),
@@ -132,5 +142,13 @@ class RegisterScreen extends StatelessWidget {
       );
     },));
 
+  }
+
+  bool isValidPhoneNumber(String phoneNumber) {
+    // Define the regex pattern for the desired format
+    RegExp regex = RegExp(r'^0\d{10}$');
+
+    // Check if the phone number matches the pattern
+    return regex.hasMatch(phoneNumber);
   }
 }

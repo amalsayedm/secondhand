@@ -57,7 +57,7 @@ class LoginCubit extends Cubit<LoginStates>{
 
     emit(RegisterLoadingState());
 
-    DioHelper.postData(path: REGISTER, data: {
+    DioHelper.Register(path: REGISTER, data: {
       'email':email,
       'password':password,
       'name':name,
@@ -65,6 +65,8 @@ class LoginCubit extends Cubit<LoginStates>{
     }).then((value){
       print(value.data);
       if(value.statusCode == 201){
+        loginModel=LoginModel.fromJson(value.data,value.statusCode);
+
         SharedPrefHelper.saveString(key: "token", value:value.data['data']['token']).
         then((bool){
           token=value.data['data']['token'];
@@ -75,7 +77,7 @@ class LoginCubit extends Cubit<LoginStates>{
         emit(RegisterSuccessState(true));
 
       }else{
-        toast(value.data['message'], Colors.amber );
+        toast("Somthing Went wrong", Colors.amber );
 
       }
 

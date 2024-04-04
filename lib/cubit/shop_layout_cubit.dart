@@ -1,8 +1,20 @@
+import 'dart:developer';
+import 'dart:io';
+
+
 import 'package:alx_spec/cubit/shop_layout_states.dart';
+import 'package:alx_spec/data_models/categories_model.dart';
+import 'package:alx_spec/data_models/location.dart';
+import 'package:alx_spec/data_models/location_model.dart';
+import 'package:alx_spec/modules/post_item_screen.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+
 import '../data_models/categories_model.dart';
+import '../data_models/category.dart';
 import '../data_models/change_favourite_model.dart';
 import '../data_models/favourite_model.dart';
 import '../data_models/login_data_model.dart';
@@ -20,20 +32,28 @@ class ShopLayoutCubit extends Cubit<ShopLayoutStates> {
   List<Widget> screens = [
     ProductsScreen(),
     CategoriesScreen(),
+    PostItemScreen(),
     FavouritesScreen(),
     SettingsScreen(),
 
   ];
+  File? image = null;
   int navBarIndex = 0;
-   ProductModel productModel = ProductModel({}, 0);
-  late CategoriesModel categoriesModel=CategoriesModel([], 0);
+  Category? selectedCat = null;
+  Location? selectedLoc=null;
+
+  ProductModel productModel = ProductModel({}, 0);
+  CategoriesModel categoriesModel=CategoriesModel([], 0);
   late FavouriteModel favouriteModel;
-  late LoginModel profileModel;
+  late LoginModel? profileModel = null;
+  LocationModel locationModel = LocationModel([], 0);
+
 
 
   ShopLayoutCubit() : super(ShopLayoutInitialSate()) {
     getHomeData();
    getCategoriesData();
+   getLocation();
    // getFavourite();
     getProfile();
   }
@@ -45,6 +65,14 @@ class ShopLayoutCubit extends Cubit<ShopLayoutStates> {
 
   changeNavBarIndex(int index) {
     navBarIndex = index;
+    switch (navBarIndex){
+      case 0:
+        { print("amaal$navBarIndex");
+          getHomeData();
+        getCategoriesData();
+        getLocation();}
+
+    }
     emit(ShopLayoutChangeNavBarState());
   }
 
@@ -149,11 +177,11 @@ class ShopLayoutCubit extends Cubit<ShopLayoutStates> {
       print(value.statusCode);
       if(value.statusCode==200){
         profileModel = LoginModel.fromJson(value.data,value.statusCode);
-        toast(profileModel.message, Colors.green);
+        toast(profileModel!.message, Colors.green);
 
         emit(ShopLayoutUpdateProfileSuccessState());
       }else{
-        toast(profileModel.message, Colors.amber);
+        toast(profileModel!.message, Colors.amber);
 
       }
 
@@ -162,6 +190,51 @@ class ShopLayoutCubit extends Cubit<ShopLayoutStates> {
 
       emit(ShopLayoutUpdateProfileErrorState());
       toast("Something went wrong", Colors.red);
+    });
+  }
+   getImage() async {
+    final ImagePicker _picker = ImagePicker();
+// Pick an image
+     try{
+    final XFile? Pimage = await _picker.pickImage(source: ImageSource.gallery);
+//TO convert Xfile into file
+    image=File(Pimage!.path);
+    emit(ShopLayoutUpdatePickImageSuccess());
+  }catch(onerror){
+       emit(ShopLayoutUpdatePickImageError());
+
+     }
+  }
+   uploadPostItem(
+      {required image, required itemmodel, required imagename}) async {
+
+    emit(ShopLayoutUploadItemeLoading());
+      DioHelper.PostItem_with_Image(
+          image: image, filename: imagename, model: itemmodel).
+      then((value) {
+        if (value.statusCode == 201) {
+          print('success');
+          toast("Item Posted Successfully", Colors.amber);
+          image = null;
+          emit(ShopLayoutUploadItemeSuccess());
+
+        }
+      }).catchError((onError) {
+        log(onError.toString());
+        toast("Something went wrong", Colors.red);
+    emit(ShopLayoutUploadItemeError());
+    });
+
+  }
+
+  void getLocation() {
+    DioHelper.getData(path: LOCATION,).then((value) {
+      print(value.data);
+      locationModel = LocationModel(value.data,value.statusCode);
+      emit(ShopLayoutLocationSuccessState());
+    }).catchError((onError) {
+      print(onError.toString());
+      emit(ShopLayoutLocationErrorState());
     });
   }
 }

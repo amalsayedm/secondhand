@@ -30,7 +30,7 @@ class SearchScreen extends StatelessWidget {
                     labeltext: "Search",
                     prefixicon: Icons.search_sharp,
                     onsubmit: (String value){
-                      SearchCubit.get(context).getSearchResult(value);
+                      //SearchCubit.get(context).getSearchResult(value);
                     },
                     validator: (String value) {}),
                 SizedBox(height: 10,),

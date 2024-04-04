@@ -10,33 +10,36 @@ import '../shared/shared_components.dart';
 class FavouritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ShopLayoutCubit,ShopLayoutStates>(
-      listener: (context,state){},
-      builder: (context,state){
-        ShopLayoutCubit cubit=ShopLayoutCubit.get(context);
-        return cubit.favouriteModel != null
-            ? cubit.favouriteModel.data.data.isEmpty
-            ? Center(
-          child: Text(
-            "No Favorites Yet",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-        )
-            : ListView.separated(
-          itemBuilder: (context, int index) {
-            return buildItem(
-                cubit.favouriteModel.data.data[index].product, cubit);
-          },
-          separatorBuilder: (context, int index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: divider(),
-            );
-          },
-          itemCount: cubit.favouriteModel.data.data.length,
-        )
-            : Center(child: CircularProgressIndicator());
-      },);
+
+
+    // return BlocConsumer<ShopLayoutCubit,ShopLayoutStates>(
+    //   listener: (context,state){},
+    //   builder: (context,state){
+    //     ShopLayoutCubit cubit=ShopLayoutCubit.get(context);
+    //     return cubit.favouriteModel != null
+    //         ? cubit.favouriteModel.data.data.isEmpty
+    //         ? Center(
+    //       child: Text(
+    //         "No Favorites Yet",
+    //         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    //       ),
+    //     )
+    //         : ListView.separated(
+    //       itemBuilder: (context, int index) {
+    //         return buildItem(
+    //             cubit.favouriteModel.data.data[index].product, cubit);
+    //       },
+    //       separatorBuilder: (context, int index) {
+    //         return Padding(
+    //           padding: const EdgeInsets.symmetric(horizontal: 10),
+    //           child: divider(),
+    //         );
+    //       },
+    //       itemCount: cubit.favouriteModel.data.data.length,
+    //     )
+    //         : Center(child: CircularProgressIndicator());
+    //   },);
+    return Center(child: Text("No Favorites Yet"));
   }
 
   Widget buildItem(Product product,ShopLayoutCubit cubit){

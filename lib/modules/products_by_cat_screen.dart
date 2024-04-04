@@ -61,7 +61,7 @@ class ProductsByCat extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => product_details_screen(product),
+              builder: (context) => ProductDetailsScreen(product),
             ),
           );
         },child:Container(color: Colors.white,
@@ -80,7 +80,9 @@ class ProductsByCat extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(product.name,maxLines: 2,overflow: TextOverflow.ellipsis,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                Text(product.name,maxLines: 1,overflow: TextOverflow.ellipsis,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                SizedBox(height: 5,),
+                Text(product.description,maxLines: 1,overflow: TextOverflow.ellipsis,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 16),),
                 Row(
                   children: [
                     Row(children: [

@@ -18,30 +18,30 @@ class SearchCubit extends Cubit<SearchStates>{
     return BlocProvider.of(context);
   }
 
-  void getSearchResult(String text) {
-
-    emit(SearchLoadingState());
-    DioHelper.postData(path:SEARCH, token: token,
-        data:{
-          "text": text,
-        } ).then((value) {
-      print(value.data);
-      if(value.data['status']){
-        searchModel = SearchModel(value.data);
-
-        emit(SearchSuccessState());
-      }else{
-        toast(searchModel.message, Colors.amber);
-
-      }
-
-    }).catchError((onError) {
-      print(onError.toString());
-
-      emit(SearchErrorState());
-      toast("Something went wrong", Colors.red);
-    });
-  }
+  // void getSearchResult(String text) {
+  //
+  //   emit(SearchLoadingState());
+  //   DioHelper.postData(path:SEARCH, token: token,
+  //       data:{
+  //         "text": text,
+  //       } ).then((value) {
+  //     print(value.data);
+  //     if(value.data['status']){
+  //       searchModel = SearchModel(value.data);
+  //
+  //       emit(SearchSuccessState());
+  //     }else{
+  //       toast(searchModel.message, Colors.amber);
+  //
+  //     }
+  //
+  //   }).catchError((onError) {
+  //     print(onError.toString());
+  //
+  //     emit(SearchErrorState());
+  //     toast("Something went wrong", Colors.red);
+  //   });
+  // }
 
 
 }

@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/shop_layout_cubit.dart';
 import '../cubit/shop_layout_states.dart';
 import '../data_models/categories_model.dart';
+import '../data_models/category.dart';
 import '../data_models/product_model.dart';
 import '../shared/shared_components.dart';
 
@@ -21,9 +22,12 @@ class ProductsScreen extends StatelessWidget {
          listener: (context,state){},
       builder: (context,state){
            ShopLayoutCubit cubit=ShopLayoutCubit.get(context);
-           if (!(cubit.productModel.products.isEmpty && cubit.categoriesModel.list.isEmpty)) {
+           if(state is ShopLayoutHomeLoadingState){
+             return Center(child: CircularProgressIndicator());
+           }
+          else if (!(cubit.productModel.products.isEmpty && cubit.categoriesModel.list.isEmpty)) {
              return productBuilder(context,cubit);
-           } else {
+           }else{
              return Center(child: CircularProgressIndicator());
            }
       },);
@@ -88,7 +92,7 @@ class ProductsScreen extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => product_details_screen(product),
+          builder: (context) => ProductDetailsScreen(product),
         ),
       );
     },child:Container(color: Colors.white,
@@ -107,7 +111,7 @@ class ProductsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(product.name,maxLines: 2,overflow: TextOverflow.ellipsis,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                Text(product.name,maxLines: 1,overflow: TextOverflow.ellipsis,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
                 SizedBox(height: 5,),
                 Text(product.description,maxLines: 1,overflow: TextOverflow.ellipsis,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 16),),
 
@@ -128,7 +132,7 @@ class ProductsScreen extends StatelessWidget {
                           // backgroundColor: product.in_favorites?Colors.deepOrange:Colors.grey,
                           child: Icon(Icons.favorite_outline,size: 14,color: Colors.white,))
                       ,onPressed: (){
-                      cubit.updateFavourite(id:product.id);
+                      //cubit.updateFavourite(id:product.id);
                     },),
 
                   ],

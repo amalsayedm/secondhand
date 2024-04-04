@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/shop_layout_cubit.dart';
 import '../cubit/shop_layout_states.dart';
 import '../data_models/categories_model.dart';
+import '../data_models/category.dart';
 import '../shared/shared_components.dart';
 
 

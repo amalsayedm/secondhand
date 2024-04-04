@@ -1,3 +1,5 @@
+import 'category.dart';
+
 class CategoriesModel {
 
   late int? status;
@@ -37,19 +39,6 @@ class CategoryList{
 
 
 }
-class Category{
- late int  id;
-  late String name,image;
 
-  Category.fromJson(Map<String,dynamic> json){
-
-    id=json['id'];
-    name=json['name'];
-    image=json['picture'];
-
-  }
-
-
-}
 
 
